@@ -4,7 +4,7 @@ from torch.utils.data import Dataset
 
 
 class AnnDataset(Dataset):
-    def __init__(self, filepath: str, label_name: str = 'label', second_filepath: str = None,
+    def __init__(self, filepath: str, label_name: str = None, second_filepath: str = None,
                  variable_gene_name: str = None):
         """
 
@@ -26,7 +26,10 @@ class AnnDataset(Dataset):
 
         genes = self.data.var.index.values
         self.genes_upper = [g.upper() for g in genes]
-        self.clusters_true = self.data.obs[label_name].values
+        if label_name is not None:
+            self.clusters_true = self.data.obs[label_name].values
+        else:
+            self.clusters_true = None
 
         self.N = len(self.clusters_true)
         self.G = len(self.genes_upper)

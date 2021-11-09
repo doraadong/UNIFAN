@@ -15,8 +15,39 @@ import umap
 
 torch.backends.cudnn.benchmark = True
 
-class Trainer(nn.Module):
 
+class Trainer(nn.Module):
+    """
+
+    Train NN models.
+
+
+    Parameters
+    ----------
+    dataset: PyTorch Dataset
+    model: Pytorch NN model
+    model_2nd: another Pytorch NN model to be trained together
+    model_name: string
+        name of the model, any of "r", "pretrain_z", "annocluster", "pretrain_annotator"
+    percent_training: float
+        percentage of data used for training, the rest used for validation
+    checkpoint_freq: integer
+        frequency of saving models during training
+    val_freq: integer
+        frequency of conducting evaluation (both training and validation set will be evaluated)
+    visualize_freq: integer
+        frequency of inferring low-dimensional representation and visualize it using UMAP
+    save_visual: boolean
+        if conduct visualization and save the figures to the output folder
+    save_checkpoint: boolean
+        if saving checkpoint models during training
+    save_infer: boolean
+        if conduct inference (low-dimensional representation for autoencoders; clusters for clustering model;
+        predicted results for classifiers) when the training finished
+    output_folder: string
+        folder to save all outputs
+
+    """
     def __init__(self, dataset, model, model_2nd=None, model_name: str = None, batch_size: int = 128,
                  num_epochs: int = 50, percent_training: float = 1.0, learning_rate: float = 0.0005,
                  decay_factor: float = 0.9, num_workers: int = 8, use_cuda: bool = False, checkpoint_freq: int = 20,
@@ -70,6 +101,7 @@ class Trainer(nn.Module):
 
         # data
         self.dataset = dataset
+
         # prepare for data loader
         train_length = int(self.dataset.N * self.percent_training)
         val_length = self.dataset.N - train_length
@@ -103,7 +135,7 @@ class Trainer(nn.Module):
                                    "pretrain_annotator": self.infer_annotator,
                                    "annocluster": self.infer_cluster}
 
-
+        # initialize the parameter list (used for regularization)
         if self.model_name in ["pretrain_annotator", "annocluster"]:
             self.annotator_param_list = nn.ParameterList()
             if self.model_name == "pretrain_annotator":
@@ -122,6 +154,15 @@ class Trainer(nn.Module):
             raise NotImplementedError(f"The current implementation only support two models training for annocluster")
 
     def train(self, **kwargs):
+
+        """
+        Train the model. Will save the trained model & evaluation results as default.
+
+        Parameters
+        ----------
+        kwargs: keyword arguements specific to each model (e.g. alpha for gene set activity scores model)
+
+        """
 
         for epoch in range(self.num_epochs):
             print(f"Current epoch: {epoch}")
@@ -150,7 +191,7 @@ class Trainer(nn.Module):
                     else:
                         _X = self.infer_functions[self.model_name](**kwargs)
                         _clusters = None
-                    self.visualize_UMAP(_X, epoch, self.dataset.clusters_true, self.output_folder,
+                    self.visualize_UMAP(_X, epoch, self.output_folder, clusters_true=self.dataset.clusters_true,
                                         clusters_pre=_clusters)
 
             # save model & inference
@@ -221,6 +262,19 @@ class Trainer(nn.Module):
             self.process_minibatch_cluster(X_batch, gene_set_batch, **kwargs)
 
     def process_minibatch_cluster(self, X_batch, gene_set_batch, weight_decay: float = 0):
+        """
+        Process minibatch for the annocluster model.
+
+        Parameters
+        ----------
+        X_batch: torch.Tensor
+            gene expression
+        gene_set_batch: torch.Tensor
+            gene set activity scores
+        weight_decay: float
+            hyperparameter gamma regularizing exclusive lasso penalty
+
+        """
         X_batch = X_batch.to(self.device, non_blocking=self.non_blocking).float()
         gene_set_batch = gene_set_batch.to(self.device, non_blocking=self.non_blocking).float()
 
@@ -250,6 +304,14 @@ class Trainer(nn.Module):
         return l.detach().item(), l_prob.detach().numpy(), k.detach().numpy(), z_e.detach().numpy()
 
     def evaluate_cluster(self, **kwargs):
+        """
+
+        Evaluate the total loss and each loss term for the training data and the total loss for the validation set
+        for the annotcluster model.
+
+        """
+
+
         train_stats = self.train_stats_dicts[self.model_name]
 
         _loss = []
@@ -296,9 +358,22 @@ class Trainer(nn.Module):
 
             train_stats['val_loss'].append(np.mean(_loss))
         else:
-            train_stats['val_loss'].append(0)
+            train_stats['val_loss'].append(np.nan)
 
     def infer_cluster(self, **kwargs):
+        """
+
+        Get z_e and clusters from the annocluster model. Also calculate ARI and NMI scores comparing with
+        the ground truth (if available).
+
+        Returns
+        -------
+        z_annocluster: numpy array
+            z_e of cells
+        clusters_pre: numpy array
+            cluster assignments
+
+        """
         train_stats = self.train_stats_dicts[self.model_name]
 
         with torch.no_grad():
@@ -318,18 +393,22 @@ class Trainer(nn.Module):
             clusters_pre = np.concatenate(k_list)
             z_annocluster = np.concatenate(z_e_list)
 
-            if self.dataset.N > 5e4:
-                idx_stratified, _ = train_test_split(range(self.dataset.N), test_size=0.5,
-                                                     stratify=self.dataset.clusters_true)
-            else:
-                idx_stratified = range(self.dataset.N)
+            if self.dataset.clusters_true is not None:
+                if self.dataset.N > 5e4:
+                    idx_stratified, _ = train_test_split(range(self.dataset.N), test_size=0.5,
+                                                         stratify=self.dataset.clusters_true)
+                else:
+                    idx_stratified = range(self.dataset.N)
 
-            # metrics
-            ari_smaller = adjusted_rand_score(clusters_pre[idx_stratified],
-                                              self.dataset.clusters_true[idx_stratified])
-            nmi_smaller = adjusted_mutual_info_score(clusters_pre, self.dataset.clusters_true)
-            print(f"annocluster: ARI for smaller cluster: {ari_smaller}")
-            print(f"annocluster: NMI for smaller cluster: {nmi_smaller}")
+                # metrics
+                ari_smaller = adjusted_rand_score(clusters_pre[idx_stratified],
+                                                  self.dataset.clusters_true[idx_stratified])
+                nmi_smaller = adjusted_mutual_info_score(clusters_pre, self.dataset.clusters_true)
+                print(f"annocluster: ARI for smaller cluster: {ari_smaller}")
+                print(f"annocluster: NMI for smaller cluster: {nmi_smaller}")
+            else:
+                ari_smaller = np.nan
+                nmi_smaller = np.nan
 
             train_stats["ARI"].append(ari_smaller)
             train_stats["NMI"].append(nmi_smaller)
@@ -338,6 +417,20 @@ class Trainer(nn.Module):
 
 
     def process_minibatch_annotator(self, X_batch, y_batch, weight_decay: float = 0):
+
+        """
+        Process minibatch for the annotator model.
+
+        Parameters
+        ----------
+        X_batch: torch.Tensor
+            gene expression
+        y_batch: torch.Tensor
+            cluster assignment
+        weight_decay: float
+            hyperparameter gamma regularizing exclusive lasso penalty
+
+        """
 
         X_batch = X_batch.to(self.device, non_blocking=self.non_blocking).float()
         y_batch = y_batch.to(self.device, non_blocking=self.non_blocking)
@@ -376,9 +469,19 @@ class Trainer(nn.Module):
 
             train_stats['val_loss'].append(np.mean(_loss))
         else:
-            train_stats['val_loss'].append(0)
+            train_stats['val_loss'].append(np.nan)
 
     def infer_annotator(self):
+        """
+
+        Get the prediction of labels on the all data.
+
+        Return
+        ------
+        clusters_classifier: numpy array
+            predicted labels from the trained annotator
+
+        """
         with torch.no_grad():
             self.model.eval()
             tf_prob = self.model(torch.from_numpy(self.dataset.data).float())
@@ -390,6 +493,26 @@ class Trainer(nn.Module):
 
     def process_minibatch_r(self, X_batch, alpha: float = 0, beta: float = 0, beta_list: torch.Tensor = None,
                             gene_covered_matrix: torch.Tensor = None):
+        """
+
+        Process minibatch for gene set activity scores model (named as r).
+
+        Parameters
+        ----------
+        X_batch: torch.Tensor
+            gene expression
+        alpha: float
+            hyperparameter regularizing L1 term in the set cover loss
+        beta: float
+            hyperparameter regularizing set loss term in the set cover loss
+        beta_list: torch.Tensor
+            beta values for all genes
+        gene_covered_matrix: torch.Tensor
+            gene set membership matrix with genes that are at least covered by one of the available sets
+
+        """
+
+
         X_batch = X_batch.to(self.device, non_blocking=self.non_blocking).float()
 
         if self.model.training:
@@ -448,7 +571,7 @@ class Trainer(nn.Module):
 
             train_stats['val_loss'].append(np.mean(_loss))
         else:
-            train_stats['val_loss'].append(0)
+            train_stats['val_loss'].append(np.nan)
 
         print(f"Finish evaluating val...")
 
@@ -456,13 +579,10 @@ class Trainer(nn.Module):
 
         """
 
-        Parameters
-        ----------
-        dataloader_all
-        clusters_true
-
         Returns
         -------
+        z_gene_set: numpy array
+            gene set activity scores
 
         """
         with torch.no_grad():
@@ -489,6 +609,11 @@ class Trainer(nn.Module):
         return z_gene_set
 
     def process_minibatch_z(self, X_batch):
+
+        """
+        Process minibatch for pretraining the autocluster model (named as pretrain_z)
+
+        """
 
         X_batch = X_batch.to(self.device, non_blocking=self.non_blocking).float()
 
@@ -523,9 +648,18 @@ class Trainer(nn.Module):
 
             train_stats['val_loss'].append(np.mean(_loss))
         else:
-            train_stats['val_loss'].append(0)
+            train_stats['val_loss'].append(np.nan)
 
     def infer_z(self):
+
+        """
+
+        Returns
+        -------
+        z_init: numpy array
+            z_e from the pretrain model
+
+        """
 
         with torch.no_grad():
             self.model.eval()
@@ -544,16 +678,22 @@ class Trainer(nn.Module):
         return z_init
 
     @staticmethod
-    def visualize_UMAP(X, epoch:int, clusters_true, output_folder: str, clusters_pre=None, color_palette:str = "tab20"):
+    def visualize_UMAP(X, epoch:int, output_folder: str, clusters_true=None, clusters_pre=None,
+                       color_palette:str = "tab20"):
         """
+
+        Visualize the low-dimensional representations using UMAP and save figures.
+
         Parameters
         ----------
-        dataloader_all
-        clusters_true
-
-        Returns
-        -------
-        :param output_folder:
+        X: numpy array
+            low-dimensional representations
+        epoch: integer
+            epoch of the model based on which the low-dimensional representations is inferred
+        clusters_true: numpy array
+            ground truth labels
+        clusters_pre: numpy array
+            cluster assignment
 
         """
 
@@ -561,20 +701,21 @@ class Trainer(nn.Module):
         umap_original = umap.UMAP().fit_transform(X)
 
         # color by cluster
-        if clusters_pre is not None:
-            hues = {'label': clusters_true, 'cluster': clusters_pre}
-        else:
-            hues = {'label': clusters_true}
+        hues = {'label': clusters_true, 'cluster': clusters_pre}
+
         for k, v in hues.items():
             df_plot = pd.DataFrame(umap_original)
-            df_plot['label'] = v
+            if v is None:
+                df_plot['label'] = np.repeat("Label not available", df_plot.shape[0])
+            else:
+                df_plot['label'] = v
             df_plot['label'].astype('str')
             df_plot.columns = ['dim_1', 'dim_2', 'label']
 
             plt.figure(figsize=(10, 10))
             sns.scatterplot(x='dim_1', y='dim_2', hue='label', data=df_plot, palette=color_palette,
-                            legend=False)
-            plt.title( f"Encoding (r) colored by {k}")
+                            legend=True)
+            plt.title(f"Encoding (r) colored by {k}")
             plt.savefig(os.path.join(output_folder, f"r_{epoch}_{k}.png"), bbox_inches="tight", format="png")
             plt.close()
 
