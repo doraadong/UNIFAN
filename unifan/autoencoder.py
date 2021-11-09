@@ -1,19 +1,10 @@
-import os
-import argparse
-import time
-from os.path import exists
-import collections
-from typing import Iterable
-import math
-
-import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-
-from vati.networks import Encoder, Decoder, Set2Gene, LinearCoder, NonNegativeCoder, SigmoidCoder
 
 torch.backends.cudnn.benchmark = True
+
+from unifan.networks import Encoder, Decoder, Set2Gene, LinearCoder, NonNegativeCoder, SigmoidCoder
+
 
 class autoencoder(nn.Module):
     """
@@ -66,11 +57,11 @@ class autoencoder(nn.Module):
             if self.reconstruction_network == 'non-negative':
                 # instantiate encoder for z
                 self.encoder = NonNegativeCoder(input_dim, z_dim, num_layers=num_layers_encoder, hidden_dim=encoder_dim,
-                                       dropout_rate=dropout_rate)
+                                                dropout_rate=dropout_rate)
             elif self.reconstruction_network == 'sigmoid':
                 # instantiate encoder for z
                 self.encoder = SigmoidCoder(input_dim, z_dim, num_layers=num_layers_encoder, hidden_dim=encoder_dim,
-                                                dropout_rate=dropout_rate)
+                                            dropout_rate=dropout_rate)
             elif self.reconstruction_network == "gaussian":
                 # instantiate encoder for z, using standard encoder
                 self.encoder = Encoder(input_dim, z_dim, num_layers=num_layers_encoder, hidden_dim=encoder_dim,
@@ -84,7 +75,7 @@ class autoencoder(nn.Module):
             if self.decoding_network == 'gaussian':
                 self.decoder_e = Decoder(z_dim, input_dim, num_layers=num_layers_decoder, hidden_dim=emission_dim)
             elif self.decoding_network == 'geneSet':
-                self.decoder_e = Set2Gene(z_dim, gene_set_dim, gene_set_table)
+                self.decoder_e = Set2Gene(gene_set_table)
 
             else:
                 raise NotImplementedError(f"The current implementation only support 'gaussian', "

@@ -1,55 +1,21 @@
 import os
-import argparse
-import time
-from os.path import exists
-import collections
-from typing import Iterable
-import math
+import gc
+import pickle
 
 from tqdm import tqdm
-import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+from sklearn.metrics.cluster import adjusted_rand_score, adjusted_mutual_info_score
+from sklearn.model_selection import train_test_split
+import seaborn as sns
+import numpy as np
+import pandas as pd
+from matplotlib import pyplot as plt
+import umap
 
 torch.backends.cudnn.benchmark = True
 
 class Trainer(nn.Module):
-
-    """
-    Clustering with annotator.
-
-    Parameters
-    ----------
-    input_dim: integer
-        number of input features
-    z_dim: integer
-        number of low-dimensional features
-    gene_set_dim: integer
-        number of gene sets
-    tau: float
-        hyperparameter to weight the annotator loss
-    zeta: float
-        hyperparameter to weight the reconstruction loss from embeddings (discrete representations)
-    encoder_dim: integer
-        dimension of hidden layer for encoders
-    emission_dim: integer
-        dimension of hidden layer for decoders
-    num_layers_encoder: integer
-        number of hidden layers  for encoder
-    num_layers_decoder: integer
-        number of hidden layers  for decoder
-    dropout_rate: float
-    use_t_dist: boolean
-        if using t distribution kernel to transform the euclidean distances between encodings and centroids
-    regulating_probability: string
-        the type of probability to regulating the clustering (by distance) results
-    centroids: torch.Tensor
-        embeddings in the low-dimensional space for the cluster centroids
-    gene_set_table: torch.Tensor
-        gene set relationship table
-
-    """
 
     def __init__(self, dataset, model, model_2nd=None, model_name: str = None, batch_size: int = 128,
                  num_epochs: int = 50, percent_training: float = 1.0, learning_rate: float = 0.0005,
@@ -67,7 +33,7 @@ class Trainer(nn.Module):
         self.non_blocking = True if use_cuda else False
 
         # model
-        _support_models = ["r", "pretrian_z", "annocluster", "pretrain_annotator"]
+        _support_models = ["r", "pretrain_z", "annocluster", "pretrain_annotator"]
         if model_name not in _support_models:
             raise NotImplementedError(f"The current implementation only support training "
                                       f"for {','.join(_support_models)}.")
@@ -90,7 +56,7 @@ class Trainer(nn.Module):
 
         # evaluation
         self.checkpoint_freq = checkpoint_freq
-        self.val_frequency = val_freq
+        self.val_freq = val_freq
         self.visual_frequency = visualize_freq
         self.output_folder = output_folder
         self.percent_training = percent_training
@@ -98,8 +64,9 @@ class Trainer(nn.Module):
         self.save_visual = save_visual
         self.save_infer = save_infer
 
-        if not os.path.exists(output_folder):
-            os.makedirs(output_folder)
+        if output_folder is not None:
+            if not os.path.exists(output_folder):
+                os.makedirs(output_folder)
 
         # data
         self.dataset = dataset
@@ -129,8 +96,12 @@ class Trainer(nn.Module):
                                                                   'train_mse_q', 'train_prob_z_l', 'ARI', 'NMI']}}
 
         self.evaluate_functions = {"r": self.evaluate_r, "pretrain_z": self.evaluate_z,
-                                "pretrain_annotator": process_minibatch_annotator,
-                                "annocluster": process_minibatch_cluster}
+                                "pretrain_annotator": self.evaluate_annotator,
+                                "annocluster": self.evaluate_cluster}
+
+        self.infer_functions = {"r": self.infer_r, "pretrain_z": self.infer_z,
+                                   "pretrain_annotator": self.infer_annotator,
+                                   "annocluster": self.infer_cluster}
 
 
         if self.model_name in ["pretrain_annotator", "annocluster"]:
@@ -230,7 +201,7 @@ class Trainer(nn.Module):
 
         # save training stats
         with open(os.path.join(self.output_folder, f"stats_{epoch}.pickle"), 'wb') as handle:
-            pickle.dump(train_stats, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(self.train_stats_dicts[self.model_name], handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     def train_epoch_r(self, **kwargs):
         for batch_idx, (X_batch) in enumerate(tqdm(self.dataloader_train)):
@@ -350,6 +321,8 @@ class Trainer(nn.Module):
             if self.dataset.N > 5e4:
                 idx_stratified, _ = train_test_split(range(self.dataset.N), test_size=0.5,
                                                      stratify=self.dataset.clusters_true)
+            else:
+                idx_stratified = range(self.dataset.N)
 
             # metrics
             ari_smaller = adjusted_rand_score(clusters_pre[idx_stratified],
@@ -389,7 +362,7 @@ class Trainer(nn.Module):
         _loss = []
         for batch_idx, (X_batch, y_batch) in enumerate(tqdm(self.dataloader_train)):
             y_batch = torch.flatten(y_batch)
-            l, _ = self.process_minibatch_annotator(X_batch, y_batch, self.annotator_param_list, **kwargs)
+            l, _ = self.process_minibatch_annotator(X_batch, y_batch, **kwargs)
             _loss.append(l)
 
         train_stats['train_loss'].append(np.mean(_loss))
@@ -398,7 +371,7 @@ class Trainer(nn.Module):
             _loss = []
             for batch_idx, (X_batch, y_batch) in enumerate(tqdm(self.dataloader_val)):
                 y_batch = torch.flatten(y_batch)
-                l, _ = self.process_minibatch_annotator(X_batch, y_batch, self.annotator_param_list, **kwargs)
+                l, _ = self.process_minibatch_annotator(X_batch, y_batch, **kwargs)
                 _loss.append(l)
 
             train_stats['val_loss'].append(np.mean(_loss))

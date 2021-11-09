@@ -35,7 +35,7 @@ def gen_tf_gene_table(genes, tf_list, dTD):
 
 def getGeneSetMatrix(_name, genes_upper):
     if _name[-3:] == 'gmt':
-        print("GMT file loading ... ")
+        print(f"GMT file {_name} loading ... ")
         filename = _name
         filepath = f"../gene_sets/{filename}"
 
@@ -49,7 +49,7 @@ def getGeneSetMatrix(_name, genes_upper):
         for k, v in pathway2gene.items():
             gs += v
 
-        print(f"Number of genes in prior {len(set(gs).intersection(genes_upper))}")
+        print(f"Number of genes in {_name} {len(set(gs).intersection(genes_upper))}")
 
         pathway_list = pathway2gene.keys()
         pathway_gene_table = gen_tf_gene_table(genes_upper, pathway_list, pathway2gene)

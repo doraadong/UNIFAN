@@ -1,19 +1,8 @@
-import os
-import argparse
-import time
-from os.path import exists
-import collections
-from typing import Iterable
-import math
-
-import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-
-from vati.networks import Encoder, Decoder, Set2Gene
-
 torch.backends.cudnn.benchmark = True
+
+from unifan.networks import Encoder, Decoder, Set2Gene
 
 
 class AnnoCluster(nn.Module):
@@ -99,8 +88,8 @@ class AnnoCluster(nn.Module):
             self.decoder_e = Decoder(z_dim, input_dim, num_layers=num_layers_decoder, hidden_dim=emission_dim)
             self.decoder_q = Decoder(z_dim, input_dim, num_layers=num_layers_decoder,hidden_dim=emission_dim)
         elif self.decoding_network == 'geneSet':
-            self.decoder_e = Set2Gene(z_dim, gene_set_dim, gene_set_table)
-            self.decoder_q = Set2Gene(z_dim, gene_set_dim, gene_set_table)
+            self.decoder_e = Set2Gene(gene_set_table)
+            self.decoder_q = Set2Gene(gene_set_table)
         else:
             raise NotImplementedError(f"The current implementation only support 'gaussian', "
                                       f"'geneSet' for emission decoder.")

@@ -1,19 +1,9 @@
-import os
-import argparse
-import time
-from os.path import exists
-import collections
-from typing import Iterable
-import math
-
-import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-
-from vati.networks import Decode2Labels
 
 torch.backends.cudnn.benchmark = True
+
+from unifan.networks import Decode2Labels
 
 
 class classifier(nn.Module):
@@ -36,7 +26,6 @@ class classifier(nn.Module):
 
     def __init__(self, z_dim: int = 335, output_dim: int = 10, emission_dim: int = 128, num_layers: int = 1,
                  use_cuda=False):
-
         super().__init__()
 
         # initialize loss
@@ -48,7 +37,6 @@ class classifier(nn.Module):
         self.use_cuda = use_cuda
         if use_cuda:
             self.cuda()
-
 
     def forward(self, x):
         y_pre = self.decoder(x)
