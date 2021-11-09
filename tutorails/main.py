@@ -1,12 +1,5 @@
 #!/usr/bin/env python
 import os, sys
-import argparse
-import time
-from os.path import exists
-import collections
-from typing import Iterable
-import pickle
-from collections import Counter
 import gc
 import itertools
 
@@ -19,12 +12,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 import scipy as sp
 import umap
-from tqdm import tqdm
-from scipy.spatial.distance import pdist, squareform
 from sklearn.metrics.cluster import adjusted_rand_score, adjusted_mutual_info_score
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
-# from networkx import *
 
 from context import unifan
 from unifan.datasets import AnnDataset, NumpyDataset
@@ -113,15 +103,8 @@ else:
     variable_genes_names = None
 
 genes_upper = expression_only.genes_upper
-clusters_true = expression_only.clusters_true
 N = expression_only.N
 G = expression_only.G
-
-# load subset index for calculating ARI
-if N > 5e4:
-    idx_stratified, _ = train_test_split(range(N), test_size=0.5, stratify=clusters_true)
-else:
-    idx_stratified = range(N)
 
 # ------ process prior data
 # generate gene_set_matrix
