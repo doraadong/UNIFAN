@@ -94,7 +94,7 @@ optional arguments:
                         string, optional, the encoder for the gene set
                         activity model, any of 'sigmoid', 'non-negative' or
                         'gaussian', default 'non-negative'
-  -m RANDOM, --random RANDOM
+  -m SEED, --seed SEED
                         integer, optional, random seed for the initialization,
                         default 0
   -c CUDA, --cuda CUDA  boolean, optional, if use GPU for neural network
