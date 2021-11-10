@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 torch.backends.cudnn.benchmark = True
 
-from unifan.networks import Encoder, Decoder, Set2Gene
+from networks import Encoder, Decoder, Set2Gene
 
 
 class AnnoCluster(nn.Module):

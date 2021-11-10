@@ -3,7 +3,7 @@ import torch.nn as nn
 
 torch.backends.cudnn.benchmark = True
 
-from unifan.networks import Decode2Labels
+from networks import Decode2Labels
 
 
 class classifier(nn.Module):

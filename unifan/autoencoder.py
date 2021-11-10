@@ -3,7 +3,7 @@ import torch.nn as nn
 
 torch.backends.cudnn.benchmark = True
 
-from unifan.networks import Encoder, Decoder, Set2Gene, LinearCoder, NonNegativeCoder, SigmoidCoder
+from networks import Encoder, Decoder, Set2Gene, LinearCoder, NonNegativeCoder, SigmoidCoder
 
 
 class autoencoder(nn.Module):
@@ -76,7 +76,6 @@ class autoencoder(nn.Module):
                 self.decoder_e = Decoder(z_dim, input_dim, num_layers=num_layers_decoder, hidden_dim=emission_dim)
             elif self.decoding_network == 'geneSet':
                 self.decoder_e = Set2Gene(gene_set_table)
-
             else:
                 raise NotImplementedError(f"The current implementation only support 'gaussian', "
                                           f"'geneSet' for emission decoder.")
