@@ -1,13 +1,41 @@
+"""
+Helper classes / functions.
+
+"""
+import argparse
 import gc
 
 import numpy as np
 
-"""
 
-Largely modified based on SCDIFF from Jun DIng.
+def str2bool(v):
+    """
+    Helper to pass boolean arguements.
+    Extracted from: https://stackoverflow.com/questions/15008758/parsing-boolean-values-with-argparse
+    Author: @Maxim
+    """
 
-"""
+    if isinstance(v, bool):
+       return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
+
 def gen_tf_gene_table(genes, tf_list, dTD):
+    """
+
+    Adapted from:
+    Author: Jun Ding
+    Project: SCDIFF2
+    Ref: Ding, J., Aronow, B. J., Kaminski, N., Kitzmiller, J., Whitsett, J. A., & Bar-Joseph, Z.
+    (2018). Reconstructing differentiation networks and their regulation from time series
+    single-cell expression data. Genome research, 28(3), 383-395.
+
+    """
     gene_names = [g.upper() for g in genes]
     TF_names = [g.upper() for g in tf_list]
     tf_gene_table = dict.fromkeys(tf_list)
@@ -34,6 +62,16 @@ def gen_tf_gene_table(genes, tf_list, dTD):
 
 
 def getGeneSetMatrix(_name, genes_upper):
+    """
+
+    Adapted from:
+    Author: Jun Ding
+    Project: SCDIFF2
+    Ref: Ding, J., Aronow, B. J., Kaminski, N., Kitzmiller, J., Whitsett, J. A., & Bar-Joseph, Z.
+    (2018). Reconstructing differentiation networks and their regulation from time series
+    single-cell expression data. Genome research, 28(3), 383-395.
+
+    """
     if _name[-3:] == 'gmt':
         print(f"GMT file {_name} loading ... ")
         filename = _name
