@@ -3,7 +3,7 @@ import torch.nn as nn
 
 torch.backends.cudnn.benchmark = True
 
-from networks import Encoder, Decoder, Set2Gene, LinearCoder, NonNegativeCoder, SigmoidCoder
+from unifan.networks import Encoder, Decoder, Set2Gene, LinearCoder, NonNegativeCoder, SigmoidCoder
 
 
 class autoencoder(nn.Module):

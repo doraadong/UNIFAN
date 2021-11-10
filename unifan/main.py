@@ -10,12 +10,12 @@ import scanpy as sc
 import pandas as pd
 import numpy as np
 
-from datasets import AnnDataset, NumpyDataset
-from annocluster import AnnoCluster
-from autoencoder import autoencoder
-from classifier import classifier
-from utils import getGeneSetMatrix, str2bool
-from trainer import Trainer
+from unifan.datasets import AnnDataset, NumpyDataset
+from unifan.annocluster import AnnoCluster
+from unifan.autoencoder import autoencoder
+from unifan.classifier import classifier
+from unifan.utils import getGeneSetMatrix, str2bool
+from unifan.trainer import Trainer
 
 
 def main():
