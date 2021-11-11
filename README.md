@@ -19,14 +19,14 @@ Next, UNIFAN clusters cells by using the learned gene set activity scores (r) an
 * Python >= 3.6
 * Python side-packages:   
 -- pytorch >= 1.9.0  
--- numpy >= 1.19.2 
--- numpy >= 1.19.2 
--- scanpy >= 1.7.2
--- tqdm >= 4.61.1
--- scikit-learn>=0.24.2
--- umap-learn>=0.5.1
--- matplotlib >= 3.3.4 
--- seaborn >= 0.11.0 
+-- numpy >= 1.19.2     
+-- pandas>=1.1.5   
+-- scanpy >= 1.7.2  
+-- tqdm >= 4.61.1  
+-- scikit-learn>=0.24.2  
+-- umap-learn>=0.5.1  
+-- matplotlib >= 3.3.4   
+-- seaborn >= 0.11.0   
 
 ## Installation 
 
