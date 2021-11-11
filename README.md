@@ -18,13 +18,15 @@ Next, UNIFAN clusters cells by using the learned gene set activity scores (r) an
 ## Prerequisites 
 * Python >= 3.6
 * Python side-packages:   
--- numpy >= 1.19.5  
--- pandas >= 0.23.4  
--- Bottleneck >= 1.3.2  
--- statsmodels >= 0.12.1 (required for post-analysis only)  
--- scipy >= 1.5.4 (required for post-analysis only)  
--- matplotlib >= 3.3.4 (required for post-analysis only)  
--- seaborn >= 0.11.0 (required for post-analysis only)
+-- pytorch >= 1.9.0  
+-- numpy >= 1.19.2 
+-- numpy >= 1.19.2 
+-- scanpy >= 1.7.2
+-- tqdm >= 4.61.1
+-- scikit-learn>=0.24.2
+-- umap-learn>=0.5.1
+-- matplotlib >= 3.3.4 
+-- seaborn >= 0.11.0 
 
 ## Installation 
 
