@@ -55,33 +55,24 @@ If not installed, then:
 ```shell
 conda install pip
 ```
+### Install Pytorch
 
-Then install TraSig, together with all its dependencies by: 
+UNIFAN is built based on Pytorch and supporting both CPU or GPU. Make sure you have Pytorch (>= 1.9.0) installed in your virtual environment. If not, please visist [Pytorch](https://pytorch.org/) and download the appropriate version.  
+
+### Install UNIFAN
+
+Install UNIFAN by: 
 
 ```shell
-pip install git+https://github.com/doraadong/TraSig.git
+pip install git+https://github.com/doraadong/UNIFAN.git
 ```
 
-If you want to upgrade TraSig to the newest version, then first uninstall it by:
+If you want to upgrade UNIFAN to the newest version, then first uninstall it by:
 
 ```shell
 pip uninstall trasig
 ```
 And then just run the pip install command again. 
-
-### Not using virtural environment
-
-If you prefer not to use a virtual envrionment, then you may install TraSig and its dependencies by (may need to use **sudo**): 
-
-```shell
-pip3 install git+https://github.com/doraadong/TraSig.git
-```
-
-You may find where the package is installed by:
- 
-```shell
-pip show trasig
-```
 
 # Command-line 
 
