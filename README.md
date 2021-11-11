@@ -31,7 +31,7 @@ Next, UNIFAN clusters cells by using the learned gene set activity scores (r) an
 
 ### Install within a virtual environment 
 
-It is recommended to use a virtural environment/pacakges manager such as [Anaconda](https://www.anaconda.com/). After successfully installing Anaconda/Miniconda, create an environment by following: 
+It is recommended to use a virtural environment/pacakges manager such as [Anaconda](https://www.anaconda.com/). After successfully installing Anaconda/Miniconda, create an environment by the following: 
 
 ```shell
 conda create -n myenv python=3.6
@@ -56,7 +56,7 @@ conda install pip
 ```
 ### Install Pytorch
 
-UNIFAN is built based on Pytorch and supporting both CPU or GPU. Make sure you have Pytorch (>= 1.9.0) installed in your virtual environment. If not, please visist [Pytorch](https://pytorch.org/) and download the appropriate version.  
+UNIFAN is built based on Pytorch and supporting both CPU or GPU. Make sure you have Pytorch (>= 1.9.0) installed in your virtual environment. If not, please visist [Pytorch](https://pytorch.org/) and install the appropriate version.  
 
 ### Install UNIFAN
 
@@ -66,11 +66,12 @@ Install by:
 pip install git+https://github.com/doraadong/UNIFAN.git
 ```
 
-If you want to upgrade UNIFAN to the newest version, then first uninstall it by:
+If you want to upgrade UNIFAN to the latest version, then first uninstall it by:
 
 ```shell
 pip uninstall unifan
 ```
+
 And then just run the pip install command again. 
 
 # Command-line 
