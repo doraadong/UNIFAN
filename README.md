@@ -83,7 +83,7 @@ pip show trasig
 
 # Command-line 
 
-You may import UNIFAN as an package and use it in your code (See #Tutorials for details). Or you may train models using the following command-line tool. 
+You may import UNIFAN as an package and use it in your code (See [Tutorials](#Tutorials) for details). Or you may train models using the following command-line tool. 
 
 ## Run UNIFAN
 
