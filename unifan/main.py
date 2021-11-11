@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os
-import sys
 import gc
 import itertools
 import argparse
@@ -31,8 +30,8 @@ def main():
     parser.add_argument('-t', '--tissue', required=True,
                         default='tissue', help="string, tissue where the input data is sampled from")
     parser.add_argument('-l', '--label', required=False,
-                        default='None', help="string, optional, the column / field name of the ground truth label, "
-                                             "if available; used for evaluation only; default 'None'")
+                        default=None, help="string, optional, the column / field name of the ground truth label, if "
+                                           "available; used for evaluation only; default None")
     parser.add_argument('-v', '--variable', required=False,
                         default='highly_variable', help="string, optional, the column / field name of the highly "
                                                         "variable genes; default 'highly_variable'")
@@ -90,7 +89,7 @@ def main():
                         default='non-negative', help="string, optional, the encoder for the gene set activity model, "
                                                      "any of 'sigmoid', 'non-negative' or 'gaussian', "
                                                      "default 'non-negative'")
-    parser.add_argument('-m', '--random', required=False, default=0,
+    parser.add_argument('-m', '--seed', required=False, default=0,
                         help="integer, optional, random seed for the initialization, default 0")
     parser.add_argument('-c', '--cuda', required=False, type=str2bool,
                         default=False, help="boolean, optional, if use GPU for neural network training, default False")
