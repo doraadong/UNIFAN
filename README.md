@@ -61,7 +61,7 @@ UNIFAN is built based on Pytorch and supporting both CPU or GPU. Make sure you h
 
 ### Install UNIFAN
 
-Install UNIFAN by: 
+Install by: 
 
 ```shell
 pip install git+https://github.com/doraadong/UNIFAN.git
@@ -196,10 +196,9 @@ optional arguments:
 Github rendering disables some functionalities of Jupyter notebooks. We recommend using [nbviewer](https://nbviewer.jupyter.org/) to view the following tutorials. 
 
 ## Run UNIFAN on example data  
-The example inputs and outputs can be found under the folder [example](example). You may follow the [tutorial](tutorials/Run_TraSig_on_example_data.ipynb) to run TraSig on the example data and analyze the outputs. You may also obtain the analysis outputs by running the aforementioned script [analyze_outputs](tutorails/analyze_outputs.py) using command-line. See the tutorial for more details. 
+
 
 ### Get the example input data 
-To run TraSig, we need to have 4 input files. Here is a [tutorial](tutorials/Prepare_input_from_dynverse_ti_methods.ipynb), showing how to prepare these files from the inference results of any trajectory inference method included in [dynverse](https://dynverse.org/). You can find the example expression data (input) and trajectory inference result (output) under the folder [trajectory](trajectory). You may also prepare the inputs for TraSig by running the aforementioned script [prepare_inputs](tutorails/prepare_inputs.py) using command-line. See the tutorial for more details. 
 
 # Credits
 The software is an implementation of the method UNIFAN, jointly developed by [Dora Li](https://github.com/doraadong), [Jun Ding](https://github.com/phoenixding) and Ziv Bar-Joseph from [System Biology Group @ Carnegie Mellon University](http://sb.cs.cmu.edu/). 
