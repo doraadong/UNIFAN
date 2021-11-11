@@ -1,5 +1,95 @@
-# UNIFAN
-Unsupervised cell functional annotation for single-cell RNA-Seq
+# Introduction
+UNIFAN (**Un**supervised S**i**ngle-cell**F**unctional **An**notation) simultaneously clusters and annotates cells with known biological processes (including pathways). For each single cell, UNIFAN first infers gene set activity scores associated with this cell using the input gene sets. Next, UNIFAN clusters cells by using the learned gene set activity scores and a reduced dimension representation of the expression of genes in the cell. The gene set activity scores are used by an “annotator” to guide the clustering such that cells sharing similar biological processes are more likely to be grouped together. Such design allows the method to focus on the key processes when clustering cells and so can overcome issues related to noise and dropout while simultaneously selecting marker gene sets and genes which can be used to annotate clusters.
+
+![flowchart](./method_diagram.png)
+
+## Table of Contents
+- [Get started](#Get-started)
+- [Command-line tools](#Command-line)
+- [Tutorials](#Tutorials)
+- [Learn more](#Learn-more)
+- [Credits](#Credits)
+
+# Get-started 
+## Prerequisites 
+* Python >= 3.6
+* Python side-packages:   
+-- numpy >= 1.19.5  
+-- pandas >= 0.23.4  
+-- Bottleneck >= 1.3.2  
+-- statsmodels >= 0.12.1 (required for post-analysis only)  
+-- scipy >= 1.5.4 (required for post-analysis only)  
+-- matplotlib >= 3.3.4 (required for post-analysis only)  
+-- seaborn >= 0.11.0 (required for post-analysis only)
+
+## Installation 
+
+### Install within a virtual environment 
+
+It is recommended to use a virtural environment/pacakges manager such as [Anaconda](https://www.anaconda.com/). After successfully installing Anaconda/Miniconda, create an environment by following: 
+
+```shell
+conda create -n myenv python=3.6
+```
+
+You can then install and run the package in the virtual environment. Activate the virtural environment by: 
+
+```shell
+conda activate myenv
+```
+
+Make sure you have **pip** installed in your environment. You may check by 
+
+```shell
+conda list
+```
+
+If not installed, then: 
+
+```shell
+conda install pip
+```
+
+Then install TraSig, together with all its dependencies by: 
+
+```shell
+pip install git+https://github.com/doraadong/TraSig.git
+```
+
+If you want to upgrade TraSig to the newest version, then first uninstall it by:
+
+```shell
+pip uninstall trasig
+```
+And then just run the pip install command again. 
+
+### Not using virtural environment
+
+If you prefer not to use a virtual envrionment, then you may install TraSig and its dependencies by (may need to use **sudo**): 
+
+```shell
+pip3 install git+https://github.com/doraadong/TraSig.git
+```
+
+You may find where the package is installed by:
+ 
+```shell
+pip show trasig
+```
+
+# Command-line 
+
+You may import UNIFAN as an package and use it in your code (See #Tutorials for details). Or you may train models using the following command-line tool. 
+
+## Run UNIFAN
+
+Run TraSig by (arguments are taken for example): 
+
+```shell
+main.py -i ../example/input/Limb_Muscle.h5ad -o ../example/output -p tabula_muris -t Limb_Muscle -l cell_ontology_class
+```
+The usage of this command is listed as follows:  
+
 
 ```shell
 usage: main.py [-h] -i INPUT -o OUTPUT -p PROJECT -t TISSUE [-l LABEL]
@@ -26,7 +116,7 @@ optional arguments:
   -l LABEL, --label LABEL
                         string, optional, the column / field name of the
                         ground truth label, if available; used for evaluation
-                        only; default 'None'
+                        only; default None
   -v VARIABLE, --variable VARIABLE
                         string, optional, the column / field name of the
                         highly variable genes; default 'highly_variable'
@@ -103,3 +193,25 @@ optional arguments:
                         integer, optional, number of works for dataloader,
                         default 8
 ```
+
+
+# Tutorials
+
+Github rendering disables some functionalities of Jupyter notebooks. We recommend using [nbviewer](https://nbviewer.jupyter.org/) to view the following tutorials. 
+
+## Run UNIFAN on example data  
+The example inputs and outputs can be found under the folder [example](example). You may follow the [tutorial](tutorials/Run_TraSig_on_example_data.ipynb) to run TraSig on the example data and analyze the outputs. You may also obtain the analysis outputs by running the aforementioned script [analyze_outputs](tutorails/analyze_outputs.py) using command-line. See the tutorial for more details. 
+
+### Get the example input data 
+To run TraSig, we need to have 4 input files. Here is a [tutorial](tutorials/Prepare_input_from_dynverse_ti_methods.ipynb), showing how to prepare these files from the inference results of any trajectory inference method included in [dynverse](https://dynverse.org/). You can find the example expression data (input) and trajectory inference result (output) under the folder [trajectory](trajectory). You may also prepare the inputs for TraSig by running the aforementioned script [prepare_inputs](tutorails/prepare_inputs.py) using command-line. See the tutorial for more details. 
+
+# Credits
+The software is an implementation of the method UNIFAN, jointly developed by [Dora Li](https://github.com/doraadong), [Jun Ding](https://github.com/phoenixding) and Ziv Bar-Joseph from [System Biology Group @ Carnegie Mellon University](http://sb.cs.cmu.edu/). 
+
+# Contacts
+* dongshul at andrew.cmu.edu 
+
+# License 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+
