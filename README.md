@@ -83,13 +83,12 @@ You may import UNIFAN as an package and use it in your code (See #Tutorials for 
 
 ## Run UNIFAN
 
-Run TraSig by (arguments are taken for example): 
+Run UNIFAN by (arguments are taken for example): 
 
 ```shell
 main.py -i ../example/input/Limb_Muscle.h5ad -o ../example/output -p tabula_muris -t Limb_Muscle -l cell_ontology_class
 ```
-The usage of this command is listed as follows:  
-
+The usage of this command is listed as follows. Note only the first 4 inputs are required:
 
 ```shell
 usage: main.py [-h] -i INPUT -o OUTPUT -p PROJECT -t TISSUE [-l LABEL]
