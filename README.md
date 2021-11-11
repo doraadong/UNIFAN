@@ -3,7 +3,7 @@ UNIFAN (**Un**supervised S**i**ngle-cell **F**unctional **An**notation) simultan
 
 ![flowchart](./unifan-pretrain.png)
 
-Next, UNIFAN clusters cells by using the learned gene set activity scores (r) and a reduced dimension representation of the expression of genes (z_e) in the cell. The gene set activity scores are used by an “annotator” to guide the clustering such that cells sharing similar biological processes are more likely to be grouped together. Such design allows the method to focus on the key processes when clustering cells and so can overcome issues related to noise and dropout while simultaneously selecting marker gene sets and genes which can be used to annotate clusters.
+Next, UNIFAN clusters cells by using the learned gene set activity scores (r) and a reduced dimension representation of the expression of genes (z^e) in the cell. The gene set activity scores are used by an “annotator” to guide the clustering such that cells sharing similar biological processes are more likely to be grouped together. Such design allows the method to focus on the key processes when clustering cells and so can overcome issues related to noise and dropout while simultaneously selecting marker gene sets and genes which can be used to annotate clusters.
 
 ![flowchart](./unifan-main.png)
 
