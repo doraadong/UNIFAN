@@ -11,7 +11,6 @@ Next, UNIFAN clusters cells by using the learned gene set activity scores (r) an
 - [Get started](#Get-started)
 - [Command-line tools](#Command-line)
 - [Tutorials](#Tutorials)
-- [Learn more](#Learn-more)
 - [Credits](#Credits)
 
 # Get-started 
@@ -70,7 +69,7 @@ pip install git+https://github.com/doraadong/UNIFAN.git
 If you want to upgrade UNIFAN to the newest version, then first uninstall it by:
 
 ```shell
-pip uninstall trasig
+pip uninstall unifan
 ```
 And then just run the pip install command again. 
 
