@@ -420,7 +420,7 @@ def main():
     expression_prior = AnnDataset(data_filepath, second_filepath=input_r_path, label_name=label_name)
 
     trainer = Trainer(dataset=expression_prior, model=model_annocluster, model_2nd=model_classifier,
-                      model_name="autocluster", batch_size=batch_size, num_epochs=num_epochs_annocluster,
+                      model_name="annocluster", batch_size=batch_size, num_epochs=num_epochs_annocluster,
                       save_infer=True, output_folder=annocluster_folder, num_workers=num_workers, use_cuda=use_cuda)
     trainer.train(weight_decay=weight_decay)
 
