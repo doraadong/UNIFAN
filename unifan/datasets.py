@@ -31,11 +31,8 @@ class AnnDataset(Dataset):
         else:
             self.clusters_true = None
 
-        self.N = len(self.clusters_true)
+        self.N = len(self.data.shape[0])
         self.G = len(self.genes_upper)
-
-        print(f"Data shape {self.data.shape[0]}")
-        print(f"N {self.N}")
 
         self.secondary_data = None
         if second_filepath is not None:
