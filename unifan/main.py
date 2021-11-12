@@ -20,83 +20,83 @@ from unifan.trainer import Trainer
 def main():
     # parse command-line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input', required=True,
+    parser.add_argument('-i', '--input', required=True, type=str,
                         default='../input/data.h5ad', help="string, path to the input expression data, "
                                                            "default '../input/data.h5ad'")
-    parser.add_argument('-o', '--output', required=True,
+    parser.add_argument('-o', '--output', required=True, type=str,
                         default='../output/', help="string, path to the output folder, default '../output/'")
-    parser.add_argument('-p', '--project', required=True,
+    parser.add_argument('-p', '--project', required=True, type=str,
                         default='data', help="string, identifier for the project, e.g., tabula_muris")
-    parser.add_argument('-t', '--tissue', required=True,
+    parser.add_argument('-t', '--tissue', required=True, type=str,
                         default='tissue', help="string, tissue where the input data is sampled from")
-    parser.add_argument('-e', '--geneSetsPath', required=False,
+    parser.add_argument('-e', '--geneSetsPath', required=False, type=str,
                         default='../gene_sets/', help="string, path to the folder where gene sets can be found, "
                                                       "default='../gene_sets/'")
-    parser.add_argument('-l', '--label', required=False,
+    parser.add_argument('-l', '--label', required=False, type=str,
                         default=None, help="string, optional, the column / field name of the ground truth label, if "
                                            "available; used for evaluation only; default None")
-    parser.add_argument('-v', '--variable', required=False,
+    parser.add_argument('-v', '--variable', required=False, type=str,
                         default='highly_variable', help="string, optional, the column / field name of the highly "
                                                         "variable genes; default 'highly_variable'")
-    parser.add_argument('-r', '--prior', required=False,
+    parser.add_argument('-r', '--prior', required=False, type=str,
                         default='c5.go.bp.v7.4.symbols.gmt+c2.cp.v7.4.symbols.gmt+TF-DNA',
                         help="string, optional, gene set file names used to learn the gene set activity scores, "
                              "use '+' to separate multiple gene set names, "
                              "default c5.go.bp.v7.4.symbols.gmt+c2.cp.v7.4.symbols.gmt+TF-DNA")
-    parser.add_argument('-f', '--features', required=False, default='gene_gene_sets',
+    parser.add_argument('-f', '--features', required=False, default='gene_gene_sets', type=str,
                         choices=['gene_sets', 'gene', 'gene_gene_sets'],
                         help="string, optional, features used for the annotator, any of 'gene_sets', 'gene' or "
                              "'gene_gene_sets', default 'gene_gene_sets'")
-    parser.add_argument('-a', '--alpha', required=False, default=1e-2,
+    parser.add_argument('-a', '--alpha', required=False, default=1e-2, type=float,
                         help="float, optional, hyperparameter for the L1 term in the set cover loss, default 1e-2")
-    parser.add_argument('-b', '--beta', required=False, default=1e-5,
+    parser.add_argument('-b', '--beta', required=False, default=1e-5, type=float,
                         help="float, optional, hyperparameter for the set cover term in the set cover loss, "
                              "default 1e-5")
-    parser.add_argument('-g', '--gamma', required=False, default=1e-3,
+    parser.add_argument('-g', '--gamma', required=False, default=1e-3, type=float,
                         help="float, optional, hyperparameter for the exclusive L1 term, default 1e-3")
-    parser.add_argument('-u', '--tau', required=False, default=10,
+    parser.add_argument('-u', '--tau', required=False, default=10, type=float,
                         help="float, optional, hyperparameter for the annotator loss, default 10")
-    parser.add_argument('-d', '--dim', required=False, default=32,
+    parser.add_argument('-d', '--dim', required=False, default=32, type=int,
                         help="integer, optional, dimension for the low-dimensional representation, default 32")
-    parser.add_argument('-s', '--batch', required=False, default=128,
+    parser.add_argument('-s', '--batch', required=False, default=128, type=int,
                         help="integer, optional, batch size for training except for pretraining annotator "
                              "(fixed at 32), default 128")
-    parser.add_argument('-na', '--nanno', required=False, default=50,
+    parser.add_argument('-na', '--nanno', required=False, default=50, type=int,
                         help="integer, optional, number of epochs to pretrain the annotator, default 50")
-    parser.add_argument('-ns', '--nscore', required=False, default=70,
+    parser.add_argument('-ns', '--nscore', required=False, default=70, type=int,
                         help="integer, optional, number of epochs to train the gene set activity model, default 70")
-    parser.add_argument('-nu', '--nauto', required=False, default=50,
+    parser.add_argument('-nu', '--nauto', required=False, default=50, type=int,
                         help="integer, optional, number of epochs to pretrain the annocluster model, default 50")
-    parser.add_argument('-nc', '--ncluster', required=False, default=25,
+    parser.add_argument('-nc', '--ncluster', required=False, default=25, type=int,
                         help="integer, optional, number of epochs to train the annocluster model, default 25")
-    parser.add_argument('-nze', '--nzenco', required=False, default=3,
+    parser.add_argument('-nze', '--nzenco', required=False, default=3, type=int,
                         help="float, optional, number of hidden layers for encoder of annocluster, default 3")
-    parser.add_argument('-nzd', '--nzdeco', required=False, default=2,
+    parser.add_argument('-nzd', '--nzdeco', required=False, default=2, type=int,
                         help="float, optional, number of hidden layers for decoder of annocluster, default 2")
-    parser.add_argument('-dze', '--dimzenco', required=False, default=128,
+    parser.add_argument('-dze', '--dimzenco', required=False, default=128, type=int,
                         help="integer, optional, number of nodes for hidden layers for encoder of annocluster, "
                              "default 128")
-    parser.add_argument('-dzd', '--dimzdeco', required=False, default=128,
+    parser.add_argument('-dzd', '--dimzdeco', required=False, default=128, type=int,
                         help="integer, optional, number of nodes for hidden layers for decoder of annocluster, "
                              "default 128")
-    parser.add_argument('-nre', '--nrenco', required=False, default=5,
+    parser.add_argument('-nre', '--nrenco', required=False, default=5, type=int,
                         help="integer, optional, number of hidden layers for the encoder of gene set activity scores "
                              "model, default 5")
-    parser.add_argument('-dre', '--dimrenco', required=False, default=128,
+    parser.add_argument('-dre', '--dimrenco', required=False, default=128, type=int,
                         help="integer, optional, number of nodes for hidden layers for encoder of gene set activity "
                              "scores model, default 128")
-    parser.add_argument('-drd', '--dimrdeco', required=False, default=128,
+    parser.add_argument('-drd', '--dimrdeco', required=False, default=128, type=int,
                         help="integer, optional, number of nodes for hidden layers for decoder of gene set activity "
                              "scores model, default 128")
-    parser.add_argument('-n', '--network', required=False, choices=['sigmoid', 'non-negative', 'gaussian'],
+    parser.add_argument('-n', '--network', required=False, choices=['sigmoid', 'non-negative', 'gaussian'],  type=str,
                         default='non-negative', help="string, optional, the encoder for the gene set activity model, "
                                                      "any of 'sigmoid', 'non-negative' or 'gaussian', "
                                                      "default 'non-negative'")
-    parser.add_argument('-m', '--seed', required=False, default=0,
+    parser.add_argument('-m', '--seed', required=False, default=0, type=int,
                         help="integer, optional, random seed for the initialization, default 0")
     parser.add_argument('-c', '--cuda', required=False, type=str2bool,
                         default=False, help="boolean, optional, if use GPU for neural network training, default False")
-    parser.add_argument('-w', '--nworkers', required=False, default=8,
+    parser.add_argument('-w', '--nworkers', required=False, default=8, type=int,
                         help="integer, optional, number of works for dataloader, default 8")
 
 
