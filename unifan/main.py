@@ -29,6 +29,9 @@ def main():
                         default='data', help="string, identifier for the project, e.g., tabula_muris")
     parser.add_argument('-t', '--tissue', required=True,
                         default='tissue', help="string, tissue where the input data is sampled from")
+    parser.add_argument('-e', '--geneSetsPath', required=False,
+                        default='../gene_sets/', help="string, path to the folder where gene sets can be found, "
+                                                      "default='../gene_sets/'")
     parser.add_argument('-l', '--label', required=False,
                         default=None, help="string, optional, the column / field name of the ground truth label, if "
                                            "available; used for evaluation only; default None")
@@ -102,6 +105,7 @@ def main():
 
     data_filepath = args.input
     output_path = args.output
+    gene_sets_path = args.geneSetsPath
     project = args.project
     tissue = args.tissue
     label_name = args.label
@@ -185,7 +189,7 @@ def main():
         _matrix_list = []
         _keys_list = []
         for _name in prior_names_list:
-            _matrix, _keys = getGeneSetMatrix(_name, genes_upper)
+            _matrix, _keys = getGeneSetMatrix(_name, genes_upper, gene_sets_path)
             _matrix_list.append(_matrix)
             _keys_list.append(_keys)
 
@@ -197,7 +201,7 @@ def main():
         gc.collect()
 
     else:
-        gene_set_matrix, keys_all = getGeneSetMatrix(prior_name, genes_upper)
+        gene_set_matrix, keys_all = getGeneSetMatrix(prior_name, genes_upper, gene_sets_path)
 
     # ------ set-up for the set cover loss
     if beta != 0:

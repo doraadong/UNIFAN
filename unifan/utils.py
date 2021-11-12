@@ -2,6 +2,7 @@
 Helper classes / functions.
 
 """
+import os
 import argparse
 import gc
 
@@ -61,7 +62,7 @@ def gen_tf_gene_table(genes, tf_list, dTD):
     return tf_gene_table
 
 
-def getGeneSetMatrix(_name, genes_upper):
+def getGeneSetMatrix(_name, genes_upper, gene_sets_path):
     """
 
     Adapted from:
@@ -75,7 +76,7 @@ def getGeneSetMatrix(_name, genes_upper):
     if _name[-3:] == 'gmt':
         print(f"GMT file {_name} loading ... ")
         filename = _name
-        filepath = f"../gene_sets/{filename}"
+        filepath = os.path.join(gene_sets_path, f"{filename}")
 
         with open(filepath) as genesets:
             pathway2gene = {line.strip().split("\t")[0]: line.strip().split("\t")[2:]
@@ -136,7 +137,7 @@ def getGeneSetMatrix(_name, genes_upper):
 
             return gene_tf_dict
 
-        tfDNA_file = "../gene_sets/Mouse_TF_targets.txt"
+        tfDNA_file = os.path.join(gene_sets_path, f"Mouse_TF_targets.txt")
         dTD = getdTD(tfDNA_file)
         dDT = getdDT(dTD)
 
