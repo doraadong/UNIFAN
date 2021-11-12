@@ -17,7 +17,7 @@ REQUIRES_PYTHON = '>=3.6'
 VERSION = '1.0.0'
 
 # What packages are required for this module to be executed?
-REQUIRED = ["pytorch", "numpy>=1.19.2", "pandas>=1.1.5", "scanpy>=1.7.2", "tqdm>=4.61.1", "scikit-learn>=0.24.2",
+REQUIRED = ["torch", "numpy>=1.19.2", "pandas>=1.1.5", "scanpy>=1.7.2", "tqdm>=4.61.1", "scikit-learn>=0.24.2",
             "umap-learn>=0.5.1", "matplotlib>=3.3.4", "seaborn>=0.11.0"]
 
 # The rest you shouldn't have to touch too much :)
