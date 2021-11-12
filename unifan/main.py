@@ -388,7 +388,7 @@ def main():
                           num_workers=num_workers, use_cuda=use_cuda)
 
         trainer.train(weight_decay=weight_decay)
-        clusters_classifier = trainer.infer_z()
+        clusters_classifier = trainer.infer_annotator()
 
         cls_training_accuracy = (clusters_classifier.numpy() == clusters_pre).sum() / N
         print(f"Cluster accuracy on training: \n {cls_training_accuracy}")
