@@ -31,7 +31,7 @@ class AnnDataset(Dataset):
         else:
             self.clusters_true = None
 
-        self.N = len(self.data.shape[0])
+        self.N = self.data.shape[0]
         self.G = len(self.genes_upper)
 
         self.secondary_data = None
