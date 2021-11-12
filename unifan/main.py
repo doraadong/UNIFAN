@@ -107,6 +107,9 @@ def main():
     label_name = args.label
     variable_gene_name = args.variable
 
+    if label_name is None:
+        print(f"Lable name is None")
+
     prior_name = args.prior
     features_type = args.features
     alpha = args.alpha
