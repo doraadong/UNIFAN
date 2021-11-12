@@ -21,6 +21,7 @@ Next, UNIFAN clusters cells by using the learned gene set activity scores (r) an
 -- numpy >= 1.19.2     
 -- pandas>=1.1.5   
 -- scanpy >= 1.7.2  
+-- leidenalg>=0.8.4  
 -- tqdm >= 4.61.1  
 -- scikit-learn>=0.24.2  
 -- umap-learn>=0.5.1  
