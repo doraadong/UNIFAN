@@ -66,18 +66,18 @@ def main():
     parser.add_argument('-ns', '--nscore', required=False, default=70, type=int,
                         help="integer, optional, number of epochs to train the gene set activity model, default 70")
     parser.add_argument('-nu', '--nauto', required=False, default=50, type=int,
-                        help="integer, optional, number of epochs to pretrain the annocluster model, default 50")
+                        help="integer, optional, number of epochs to pretrain the AnnoCluster model, default 50")
     parser.add_argument('-nc', '--ncluster', required=False, default=25, type=int,
-                        help="integer, optional, number of epochs to train the annocluster model, default 25")
+                        help="integer, optional, number of epochs to train the AnnoCluster model, default 25")
     parser.add_argument('-nze', '--nzenco', required=False, default=3, type=int,
-                        help="float, optional, number of hidden layers for encoder of annocluster, default 3")
+                        help="float, optional, number of hidden layers for encoder of AnnoCluster, default 3")
     parser.add_argument('-nzd', '--nzdeco', required=False, default=2, type=int,
-                        help="float, optional, number of hidden layers for decoder of annocluster, default 2")
+                        help="float, optional, number of hidden layers for decoder of AnnoCluster, default 2")
     parser.add_argument('-dze', '--dimzenco', required=False, default=128, type=int,
-                        help="integer, optional, number of nodes for hidden layers for encoder of annocluster, "
+                        help="integer, optional, number of nodes for hidden layers for encoder of AnnoCluster, "
                              "default 128")
     parser.add_argument('-dzd', '--dimzdeco', required=False, default=128, type=int,
-                        help="integer, optional, number of nodes for hidden layers for decoder of annocluster, "
+                        help="integer, optional, number of nodes for hidden layers for decoder of AnnoCluster, "
                              "default 128")
     parser.add_argument('-nre', '--nrenco', required=False, default=5, type=int,
                         help="integer, optional, number of hidden layers for the encoder of gene set activity scores "
@@ -151,23 +151,24 @@ def main():
         pin_memory = False
         non_blocking = False
 
-    def getOutputName(_name):
-        if _name[-3:] == 'gmt':
-            output_name = _name.split('.')[2]
-        else:
-            output_name = _name
-
-        return output_name
-
     if '+' in prior_name:
         prior_names_list = prior_name.split('+')
-        output_names = []
-        for _name in prior_names_list:
-            output_names.append(getOutputName(_name))
 
-        output_name = "+".join(output_names)
-    else:
-        output_name = getOutputName(prior_name)
+    # ------ prepare for output
+    output_parent_path = os.path.join(output_path, f"{project}/{tissue}/")
+
+    r_folder = f"{output_parent_path}r"
+    input_r_ae_path = os.path.join(r_folder, f"r_model_{r_epoch}.pickle")
+    input_r_path = os.path.join(r_folder, f"r_{r_epoch}.npy")
+    input_r_names_path = os.path.join(r_folder, f"r_names_{r_epoch}.npy")
+
+    pretrain_z_folder = f"{output_parent_path}pretrain_z"
+    input_z_path = os.path.join(pretrain_z_folder, f"pretrain_z_{z_epoch}.npy")
+    input_ae_path = os.path.join(pretrain_z_folder, f"pretrain_z_model_{z_epoch}.pickle")
+    input_cluster_path = os.path.join(pretrain_z_folder, f"cluster_{z_epoch}.npy")
+
+    pretrain_annotator_folder = f"{output_parent_path}pretrain_annotator"
+    annocluster_folder = f"{output_parent_path}annocluster_{features_type}"
 
     # ------ load data
     if features_type in ["gene", "gene_gene_sets"]:
@@ -220,22 +221,6 @@ def main():
 
     gene_set_dim = gene_set_matrix.shape[0]
     gene_set_matrix = torch.from_numpy(gene_set_matrix).to(device, non_blocking=non_blocking)
-
-    # ------ prepare for output
-    output_parent_path = os.path.join(output_path, f"{project}/{tissue}/")
-
-    r_folder = f"{output_parent_path}r"
-    input_r_ae_path = os.path.join(r_folder, f"r_model_{r_epoch}.pickle")
-    input_r_path = os.path.join(r_folder, f"r_{r_epoch}.npy")
-    input_r_names_path = os.path.join(r_folder, f"r_names_{r_epoch}.npy")
-
-    pretrain_z_folder = f"{output_parent_path}pretrain_z"
-    input_z_path = os.path.join(pretrain_z_folder, f"pretrain_z_{z_epoch}.npy")
-    input_ae_path = os.path.join(pretrain_z_folder, f"pretrain_z_model_{z_epoch}.pickle")
-    input_cluster_path = os.path.join(pretrain_z_folder, f"cluster_{z_epoch}.npy")
-
-    pretrain_annotator_folder = f"{output_parent_path}pretrain_annotator"
-    annocluster_folder = f"{output_parent_path}annocluster_{features_type}"
 
     # ------ Train gene set activity scores (r) model ------
     if features_type == "gene":
@@ -296,7 +281,7 @@ def main():
     input_r_names_path = f"{input_r_names_path}_filtered_{features_type}.npy"
     np.save(input_r_names_path, set_names)
 
-    # save new features
+    # save processed features
     input_r_path = f"{input_r_path}_filtered_{features_type}.npy"
     np.save(input_r_path, z_gene_set)
     gene_set_dim = z_gene_set.shape[1]
@@ -408,7 +393,7 @@ def main():
     if use_pretrain:
         pretrained_state_dict = model_autoencoder.state_dict()
 
-        # re-initialize parameters related to clusters
+        # load pretrained AnnoCluster model
         state_dict = model_annocluster.state_dict()
         for k, v in state_dict.items():
             if k in pretrained_state_dict.keys():
