@@ -29,7 +29,7 @@ def main():
                         default='data', help="string, identifier for the project, e.g., tabula_muris")
     parser.add_argument('-t', '--tissue', required=True, type=str,
                         default='tissue', help="string, tissue where the input data is sampled from")
-    parser.add_argument('-e', '--geneSetsPath', required=False, type=str,
+    parser.add_argument('-e', '--geneSetsPath', required=True, type=str,
                         default='../gene_sets/', help="string, path to the folder where gene sets can be found, "
                                                       "default='../gene_sets/'")
     parser.add_argument('-l', '--label', required=False, type=str,
