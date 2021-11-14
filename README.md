@@ -197,7 +197,7 @@ optional arguments:
 Github rendering disables some functionalities of Jupyter notebooks. We recommend using [nbviewer](https://nbviewer.jupyter.org/) to view the following tutorials. 
 
 ## Run UNIFAN on example data  
-In [tutorial](tutorials/UNIFAN_example.ipynb), we illustrate how to run UNIFAN step-by-step on the example data: Limb_Muscle from the Tabula Muris. 
+In [tutorial](tutorails/UNIFAN_example.ipynb), we illustrate how to run UNIFAN step-by-step on the example data: Limb_Muscle from the Tabula Muris. 
 
 ### Get the example input data 
 
