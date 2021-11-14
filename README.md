@@ -86,16 +86,17 @@ Run UNIFAN by (arguments are taken for example):
 ```shell
 main.py -i ../example/input/Limb_Muscle.h5ad -o ../example/output -p tabula_muris -t Limb_Muscle -l cell_ontology_class
 ```
-The usage of this command is listed as follows. Note only the first 4 inputs are required:
+The usage of this command is listed as follows. Note only the first 5 inputs are required:
 
 ```shell
-usage: main.py [-h] -i INPUT -o OUTPUT -p PROJECT -t TISSUE [-l LABEL]
-               [-v VARIABLE] [-r PRIOR] [-f {gene_sets,gene,gene_gene_sets}]
-               [-a ALPHA] [-b BETA] [-g GAMMA] [-u TAU] [-d DIM] [-s BATCH]
-               [-na NANNO] [-ns NSCORE] [-nu NAUTO] [-nc NCLUSTER]
-               [-nze NZENCO] [-nzd NZDECO] [-dze DIMZENCO] [-dzd DIMZDECO]
-               [-nre NRENCO] [-dre DIMRENCO] [-drd DIMRDECO]
-               [-n {sigmoid,non-negative,gaussian}] [-m RANDOM] [-c CUDA]
+usage: main.py [-h] -i INPUT -o OUTPUT -p PROJECT -t TISSUE [-e GENESETSPATH]
+               [-l LABEL] [-v VARIABLE] [-r PRIOR]
+               [-f {gene_sets,gene,gene_gene_sets}] [-a ALPHA] [-b BETA]
+               [-g GAMMA] [-u TAU] [-d DIM] [-s BATCH] [-na NANNO]
+               [-ns NSCORE] [-nu NAUTO] [-nc NCLUSTER] [-nze NZENCO]
+               [-nzd NZDECO] [-dze DIMZENCO] [-dzd DIMZDECO] [-nre NRENCO]
+               [-dre DIMRENCO] [-drd DIMRDECO]
+               [-n {sigmoid,non-negative,gaussian}] [-m SEED] [-c CUDA]
                [-w NWORKERS]
 
 optional arguments:
@@ -110,6 +111,9 @@ optional arguments:
                         string, identifier for the project, e.g., tabula_muris
   -t TISSUE, --tissue TISSUE
                         string, tissue where the input data is sampled from
+  -e GENESETSPATH, --geneSetsPath GENESETSPATH
+                        string, path to the folder where gene sets can be
+                        found, default='../gene_sets/'
   -l LABEL, --label LABEL
                         string, optional, the column / field name of the
                         ground truth label, if available; used for evaluation
@@ -181,14 +185,14 @@ optional arguments:
                         string, optional, the encoder for the gene set
                         activity model, any of 'sigmoid', 'non-negative' or
                         'gaussian', default 'non-negative'
-  -m SEED, --seed SEED
-                        integer, optional, random seed for the initialization,
+  -m SEED, --seed SEED  integer, optional, random seed for the initialization,
                         default 0
   -c CUDA, --cuda CUDA  boolean, optional, if use GPU for neural network
                         training, default False
   -w NWORKERS, --nworkers NWORKERS
                         integer, optional, number of works for dataloader,
                         default 8
+
 ```
 
 
