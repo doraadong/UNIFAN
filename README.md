@@ -203,7 +203,8 @@ Github rendering disables some functionalities of Jupyter notebooks. We recommen
 ## Run UNIFAN on example data  
 In [tutorial](tutorails/UNIFAN_example.ipynb), we illustrate how to run UNIFAN step-by-step on the example data: Limb_Muscle from the Tabula Muris. 
 
-### Get the example input data 
+### Download and Preprocess the Input Data
+You may download the gene sets in [gene_sets](gene_sets). As default, we use c5.go.bp.v7.4.symbols.gmt, c2.cp.v7.4.symbols.gmt and the TF-DNA interacitons data (Mouse_TF_targets.txt). 
 
 # Credits
 The software is an implementation of the method UNIFAN, jointly developed by [Dora Li](https://github.com/doraadong) and Ziv Bar-Joseph from [System Biology Group @ Carnegie Mellon University](http://sb.cs.cmu.edu/) and [Jun Ding](https://github.com/phoenixding) from McGill University.
