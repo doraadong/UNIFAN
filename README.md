@@ -202,7 +202,7 @@ In [tutorial](tutorails/UNIFAN_example.ipynb), we illustrate how to run UNIFAN s
 ### Get the example input data 
 
 # Credits
-The software is an implementation of the method UNIFAN, jointly developed by [Dora Li](https://github.com/doraadong), [Jun Ding](https://github.com/phoenixding) and Ziv Bar-Joseph from [System Biology Group @ Carnegie Mellon University](http://sb.cs.cmu.edu/). 
+The software is an implementation of the method UNIFAN, jointly developed by [Dora Li](https://github.com/doraadong) and Ziv Bar-Joseph from [System Biology Group @ Carnegie Mellon University](http://sb.cs.cmu.edu/) and [Jun Ding](https://github.com/phoenixding) from McGill University.
 
 # Contacts
 * dongshul at andrew.cmu.edu 
