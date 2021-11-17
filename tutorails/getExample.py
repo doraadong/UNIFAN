@@ -3,6 +3,15 @@ import argparse
 
 import scanpy as sc
 
+
+"""
+
+Process the Tabula Muris senis data.
+
+Download data from:  https://figshare.com/ndownloader/files/24351086
+
+"""
+
 def main():
     # parse command-line arguments
     parser = argparse.ArgumentParser()
