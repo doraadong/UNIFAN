@@ -206,7 +206,7 @@ In [tutorial](tutorails/UNIFAN_example.ipynb), we illustrate how to run UNIFAN s
 ### Download and Preprocess the Input Data
 You may download the gene sets in [gene_sets](gene_sets). As default, we use the GO terms for biological processes (c5.go.bp.v7.4.symbols.gmt), canonical pathways (c2.cp.v7.4.symbols.gmt) and the TF-DNA interacitons data (Mouse_TF_targets.txt). 
 
-To prepare the example data (Limb_Muscle in Tabula Muris), first download the [Tabula Muris senis data](https://figshare.com/ndownloader/files/24351086). Then run the Python script getExample.py[tutorails/getExample.py] using the following command: 
+To prepare the example data (Limb_Muscle in Tabula Muris), first download the [Tabula Muris senis data](https://figshare.com/ndownloader/files/24351086). Then run the Python script [getExample.py](tutorails/getExample.py) using the following command: 
 
 ```shell
 python -p ./facs.h5ad -i ../example/input -t Limb_Muscle
