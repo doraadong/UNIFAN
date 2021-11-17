@@ -206,6 +206,33 @@ In [tutorial](tutorails/UNIFAN_example.ipynb), we illustrate how to run UNIFAN s
 ### Download and Preprocess the Input Data
 You may download the gene sets in [gene_sets](gene_sets). As default, we use the GO terms for biological processes (c5.go.bp.v7.4.symbols.gmt), canonical pathways (c2.cp.v7.4.symbols.gmt) and the TF-DNA interacitons data (Mouse_TF_targets.txt). 
 
+To prepare the example data (Limb_Muscle in Tabula Muris), first download the [Tabula Muris senis data](https://figshare.com/ndownloader/files/24351086). Then run the Python script getExample.py[tutorails/getExample.py] using the following command: 
+
+```shell
+python -p ./facs.h5ad -i ../example/input -t Limb_Muscle
+
+```
+The usage of this command is listed as follows:
+
+```shell
+usage: getExample.py [-h] -p PATH -i FOLDER -t TISSUE [-k TOPK]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PATH, --path PATH  string, path to the downloaded data, default
+                        './facs.h5ad'
+  -i FOLDER, --folder FOLDER
+                        string, path to the folder to save the data, default
+                        '../example/input'
+  -t TISSUE, --tissue TISSUE
+                        string, specify the output tissue; if using the
+                        default None, then all tissues will be outputted and
+                        saved separately in the folder; default None
+  -k TOPK, --topk TOPK  integer, optional, number of most variable genes,
+                        default 2000
+                        
+```
+
 # Credits
 The software is an implementation of the method UNIFAN, jointly developed by [Dora Li](https://github.com/doraadong) and Ziv Bar-Joseph from [System Biology Group @ Carnegie Mellon University](http://sb.cs.cmu.edu/) and [Jun Ding](https://github.com/phoenixding) from McGill University.
 
