@@ -97,7 +97,7 @@ def main():
     parser.add_argument('-c', '--cuda', required=False, type=str2bool,
                         default=False, help="boolean, optional, if use GPU for neural network training, default False")
     parser.add_argument('-w', '--nworkers', required=False, default=8, type=int,
-                        help="integer, optional, number of works for dataloader, default 8")
+                        help="integer, optional, number of workers for dataloader, default 8")
 
 
     args = parser.parse_args()
