@@ -165,12 +165,10 @@ class Trainer(nn.Module):
         """
 
         for epoch in range(self.num_epochs):
-            print(f"Current epoch: {epoch}")
             self.model.train()
             if self.model_2nd is not None:
                 self.model_2nd.train()
 
-            print(f"Start training...")
             self.train_functions[self.model_name](**kwargs)
 
             if epoch % self.val_freq == 0:
