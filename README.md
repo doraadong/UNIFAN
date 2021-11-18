@@ -209,7 +209,7 @@ You may download the gene sets in [gene_sets](gene_sets). As default, we use the
 To prepare the example data (Limb_Muscle in Tabula Muris), first download the [Tabula Muris senis data](https://figshare.com/ndownloader/files/24351086). Then run the Python script [getExample.py](tutorails/getExample.py) using the following command: 
 
 ```shell
-python -p ./facs.h5ad -i ../example/input -t Limb_Muscle
+python getExample.py -p ./facs.h5ad -i ../example/input -t Limb_Muscle
 
 ```
 The usage of this command is listed as follows:
