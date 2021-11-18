@@ -347,7 +347,6 @@ class Trainer(nn.Module):
         train_stats['train_mse_q'].append(np.mean(_l_q))
         train_stats['train_prob_z_l'].append(np.mean(_prob_z_l))
 
-        print(f"Start evaluating val...")
         if self.percent_training != 1:
             _loss = []
             for batch_idx, (X_batch, gene_set_batch) in enumerate(tqdm(self.dataloader_val)):
@@ -547,20 +546,16 @@ class Trainer(nn.Module):
         _sp = []
         _cp = []
 
-        print(f"Start evaluating train ...")
         for batch_idx, (X_batch) in enumerate(tqdm(self.dataloader_train)):
             l, _, sp, cp = self.process_minibatch_r(X_batch, **kwargs)
             _loss.append(l)
             _sp.append(sp)
             _cp.append(cp)
 
-        print(f"Finish evaluating train...")
-
         train_stats['train_loss'].append(np.mean(_loss))
         train_stats['train_sparsity'].append(np.mean(_sp))
         train_stats['train_set_cover'].append(np.mean(_cp))
 
-        print(f"Start evaluating val...")
         if self.percent_training != 1:
             _loss = []
             for batch_idx, (X_batch) in enumerate(tqdm(self.dataloader_val)):
@@ -570,8 +565,6 @@ class Trainer(nn.Module):
             train_stats['val_loss'].append(np.mean(_loss))
         else:
             train_stats['val_loss'].append(np.nan)
-
-        print(f"Finish evaluating val...")
 
     def infer_r(self, **kwargs):
 
