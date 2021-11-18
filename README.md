@@ -190,7 +190,7 @@ optional arguments:
   -c CUDA, --cuda CUDA  boolean, optional, if use GPU for neural network
                         training, default False
   -w NWORKERS, --nworkers NWORKERS
-                        integer, optional, number of works for dataloader,
+                        integer, optional, number of workers for dataloader,
                         default 8
 
 ```
