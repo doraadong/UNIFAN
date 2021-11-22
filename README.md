@@ -234,7 +234,7 @@ optional arguments:
                         
 ```
 # Learn-more
-Check out [preprint](https://www.biorxiv.org/content/10.1101/2021.11.20.469410v1). 
+Check out our [preprint](https://www.biorxiv.org/content/10.1101/2021.11.20.469410v1). 
 
 # Credits
 The software is an implementation of the method UNIFAN, jointly developed by [Dora Li](https://github.com/doraadong) and Ziv Bar-Joseph from [System Biology Group @ Carnegie Mellon University](http://sb.cs.cmu.edu/) and [Jun Ding](https://github.com/phoenixding) from McGill University.
