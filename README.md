@@ -11,6 +11,7 @@ Next, UNIFAN clusters cells by using the learned gene set activity scores (r) an
 - [Get started](#Get-started)
 - [Command-line tools](#Command-line)
 - [Tutorials](#Tutorials)
+- [Learn-more](#Learn-more)
 - [Credits](#Credits)
 
 # Get-started 
@@ -232,6 +233,8 @@ optional arguments:
                         default 2000
                         
 ```
+# Learn-more
+Check out [preprint](https://www.biorxiv.org/content/10.1101/2021.11.20.469410v1). 
 
 # Credits
 The software is an implementation of the method UNIFAN, jointly developed by [Dora Li](https://github.com/doraadong) and Ziv Bar-Joseph from [System Biology Group @ Carnegie Mellon University](http://sb.cs.cmu.edu/) and [Jun Ding](https://github.com/phoenixding) from McGill University.
