@@ -487,7 +487,7 @@ class Trainer(nn.Module):
         clusters_prob_pre = torch.exp(tf_prob)
         clusters_classifier = np.argmax(clusters_prob_pre, axis=1)
 
-        return clusters_classifier
+        return clusters_classifier.detach().cpu().numpy()
 
     def process_minibatch_r(self, X_batch, alpha: float = 0, beta: float = 0, beta_list: torch.Tensor = None,
                             gene_covered_matrix: torch.Tensor = None):
