@@ -299,7 +299,8 @@ class Trainer(nn.Module):
             self.scheduler.step()
             self.scheduler_2nd.step()
 
-        return l.detach().item(), l_prob.detach().numpy(), k.detach().numpy(), z_e.detach().numpy()
+        return l.detach().cpu().item(), l_prob.detach().cpu().numpy(), k.detach().cpu().numpy(), \
+               z_e.detach().cpu().numpy()
 
     def evaluate_cluster(self, **kwargs):
         """
@@ -326,14 +327,14 @@ class Trainer(nn.Module):
             y_pre = self.model_2nd(gene_set_batch)
             pre_prob = torch.exp(y_pre)
 
-            l = self.model.loss(X_batch, x_e, x_q, z_dist, prior_prob=pre_prob).detach().item()
-            l_prob = self.model_2nd.loss(y_pre, k).detach().item()
+            l = self.model.loss(X_batch, x_e, x_q, z_dist, prior_prob=pre_prob).detach().cpu().item()
+            l_prob = self.model_2nd.loss(y_pre, k).detach().cpu().item()
 
             # calculate each loss
-            l_e = self.model.mse_loss(X_batch, x_e).detach().item()
-            l_q = self.model.mse_loss(X_batch, x_q).detach().item()
-            mse_l = self.model._loss_reconstruct(X_batch, x_e, x_q).detach().item()
-            prob_z_l = self.model._loss_z_prob(z_dist, prior_prob=pre_prob).detach().item()
+            l_e = self.model.mse_loss(X_batch, x_e).detach().cpu().item()
+            l_q = self.model.mse_loss(X_batch, x_q).detach().cpu().item()
+            mse_l = self.model._loss_reconstruct(X_batch, x_e, x_q).detach().cpu().item()
+            prob_z_l = self.model._loss_z_prob(z_dist, prior_prob=pre_prob).detach().cpu().item()
 
             _loss.append(l)
             _l_e.append(l_e)
@@ -445,7 +446,7 @@ class Trainer(nn.Module):
             self.optimizer.step()
             self.scheduler.step()
 
-        return l.detach().item(), y_pre.detach().numpy()
+        return l.detach().cpu().item(), y_pre.detach().cpu().numpy()
 
     def evaluate_annotator(self,  **kwargs):
         train_stats = self.train_stats_dicts[self.model_name]
