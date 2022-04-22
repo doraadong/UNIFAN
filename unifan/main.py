@@ -375,7 +375,7 @@ def main():
         trainer.train(weight_decay=weight_decay)
         clusters_classifier = trainer.infer_annotator()
 
-        cls_training_accuracy = (clusters_classifier.numpy() == clusters_pre).sum() / N
+        cls_training_accuracy = (clusters_classifier == clusters_pre).sum() / N
         print(f"Cluster accuracy on training: \n {cls_training_accuracy}")
 
         cls_times += 1
