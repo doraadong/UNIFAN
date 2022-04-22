@@ -482,12 +482,13 @@ class Trainer(nn.Module):
         """
         with torch.no_grad():
             self.model.eval()
-            tf_prob = self.model(torch.from_numpy(self.dataset.data).float())
+            tf_prob = self.model(
+                torch.from_numpy(self.dataset.data).to(self.device, non_blocking=self.non_blocking).float())
 
         clusters_prob_pre = torch.exp(tf_prob)
-        clusters_classifier = np.argmax(clusters_prob_pre, axis=1)
+        clusters_classifier = np.argmax(clusters_prob_pre.detach().cpu().numpy(), axis=1)
 
-        return clusters_classifier.detach().cpu().numpy()
+        return clusters_classifier
 
     def process_minibatch_r(self, X_batch, alpha: float = 0, beta: float = 0, beta_list: torch.Tensor = None,
                             gene_covered_matrix: torch.Tensor = None):
