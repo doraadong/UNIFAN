@@ -239,7 +239,7 @@ def main():
             z_gene_set = np.load(input_r_path)
         else:
             if os.path.isfile(input_r_ae_path):
-                model_gene_set.load_state_dict(torch.load(input_r_ae_path)['state_dict'])
+                model_gene_set.load_state_dict(torch.load(input_r_ae_path, map_location=device)['state_dict'])
 
             trainer = Trainer(dataset=expression_only, model=model_gene_set, model_name="r", batch_size=batch_size,
                               num_epochs=num_epochs_r, save_infer=True, output_folder=r_folder, num_workers=num_workers,
@@ -301,10 +301,10 @@ def main():
     if os.path.isfile(input_z_path) and os.path.isfile(input_ae_path):
         print(f"Both pretrained autoencoder and inferred z exist. No need to pretrain the annocluster model.")
         z_init = np.load(input_z_path)
-        model_autoencoder.load_state_dict(torch.load(input_ae_path)['state_dict'])
+        model_autoencoder.load_state_dict(torch.load(input_ae_path, map_location=device)['state_dict'])
     else:
         if os.path.isfile(input_ae_path):
-            model_autoencoder.load_state_dict(torch.load(input_ae_path)['state_dict'])
+            model_autoencoder.load_state_dict(torch.load(input_ae_path, map_location=device)['state_dict'])
 
         trainer = Trainer(dataset=expression_only, model=model_autoencoder, model_name="pretrain_z",
                           batch_size=batch_size,
