@@ -85,7 +85,7 @@ You may import UNIFAN as an package and use it in your code (See [Tutorials](#Tu
 Run UNIFAN by (arguments are taken for example): 
 
 ```shell
-main.py -i ../example/input/Limb_Muscle.h5ad -o ../example/output -p tabula_muris -t Limb_Muscle -l cell_ontology_class
+main.py -i ../example/input/Limb_Muscle.h5ad -o ../example/output -p tabula_muris -t Limb_Muscle -l cell_ontology_class -e ../gene_sets/
 ```
 The usage of this command is listed as follows. Note only the first 5 inputs are required:
 
