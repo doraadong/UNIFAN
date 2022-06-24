@@ -205,7 +205,6 @@ class Trainer(nn.Module):
                               'state_dict_2': self.model_2nd.state_dict(),
                               'optimizer_2': self.optimizer_2nd.state_dict()}
 
-                # default (no epoch identifier) model are trained with 20 epochs
                 torch.save(_state, os.path.join(self.output_folder, f"{self.model_name}_model_{epoch}.pickle"))
 
                 del _state
@@ -222,7 +221,6 @@ class Trainer(nn.Module):
                       'state_dict_2': self.model_2nd.state_dict(),
                       'optimizer_2': self.optimizer_2nd.state_dict()}
 
-        # default (no epoch identifier) model are trained with 20 epochs
         torch.save(_state, os.path.join(self.output_folder, f"{self.model_name}_model_{epoch}.pickle"))
 
         del _state
