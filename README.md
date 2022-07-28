@@ -209,9 +209,6 @@ You may download the gene sets in [gene_sets](gene_sets). As default, we use the
 
 UNIFAN takes AnnData files as input. See [AnnData](https://anndata.readthedocs.io/en/latest/) for details. To prepare the example data (Limb_Muscle in Tabula Muris), first download the [Tabula Muris senis data](https://figshare.com/ndownloader/files/24351086). Then run the Python script [getExample.py](tutorails/getExample.py) to preprocess the count data using the following command: 
 
-## Analyze results and annotate clusters
-In [cluster annotating tutorial](tutorails/UNIFAN_cluster_annotations.ipynb), we illustrate how to use the coefficients learned by UNIFAN to annotate clusters. Particularly, we show how to select representing gene sets / genes for each cluster, evaluate if selected genes are likely marker genes and visualize the annotations. 
-
 ```shell
 python getExample.py -p ./facs.h5ad -i ../example/input -t Limb_Muscle
 
@@ -236,6 +233,10 @@ optional arguments:
                         default 2000
                         
 ```
+
+## Analyze results and annotate clusters
+In [cluster annotating tutorial](tutorails/UNIFAN_cluster_annotations.ipynb), we illustrate how to use the coefficients learned by UNIFAN to annotate clusters. Particularly, we show how to select representing gene sets / genes for each cluster, evaluate if selected genes are likely marker genes and visualize the annotations. 
+
 # Learn-more
 Check our paper at [Genome Research](https://genome.cshlp.org/content/early/2022/06/28/gr.276609.122.long). Link to [preprint](https://www.biorxiv.org/content/10.1101/2021.11.20.469410v2). 
 
