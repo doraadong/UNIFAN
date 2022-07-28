@@ -202,12 +202,15 @@ optional arguments:
 Github rendering disables some functionalities of Jupyter notebooks. We recommend using [nbviewer](https://nbviewer.jupyter.org/) to view the following tutorials. 
 
 ## Run UNIFAN on example data  
-In [tutorial](tutorails/UNIFAN_example.ipynb), we illustrate how to run UNIFAN step-by-step on the example data: Limb_Muscle from Tabula Muris. 
+In [UNIFAN training tutorial](tutorails/UNIFAN_example.ipynb), we illustrate how to run UNIFAN step-by-step on the example data: Limb_Muscle from Tabula Muris. 
 
 ### Download and Preprocess the Input Data
 You may download the gene sets in [gene_sets](gene_sets). As default, we use the GO terms for biological processes (c5.go.bp.v7.4.symbols.gmt), canonical pathways (c2.cp.v7.4.symbols.gmt) and the TF-DNA interacitons data (Mouse_TF_targets.txt). 
 
 UNIFAN takes AnnData files as input. See [AnnData](https://anndata.readthedocs.io/en/latest/) for details. To prepare the example data (Limb_Muscle in Tabula Muris), first download the [Tabula Muris senis data](https://figshare.com/ndownloader/files/24351086). Then run the Python script [getExample.py](tutorails/getExample.py) to preprocess the count data using the following command: 
+
+## Analyze results and annotate clusters
+In [cluster annotating tutorial](tutorails/UNIFAN_cluster_annotations.ipynb), we illustrate how to use the coefficients learned by UNIFAN to annotate clusters. Particularly, we show how to select representing gene sets / genes for each cluster, evaluate if selected genes are likely marker genes and visualize the annotations. 
 
 ```shell
 python getExample.py -p ./facs.h5ad -i ../example/input -t Limb_Muscle
