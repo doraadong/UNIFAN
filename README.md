@@ -11,6 +11,7 @@ Next, UNIFAN clusters cells by using the learned gene set activity scores (r) an
 - [Get started](#Get-started)
 - [Command-line tools](#Command-line)
 - [Tutorials](#Tutorials)
+- [Updates log](#Updates-log)
 - [Learn-more](#Learn-more)
 - [Credits](#Credits)
 
@@ -234,8 +235,14 @@ optional arguments:
                         
 ```
 
+We also provide [Data preprocessing](tutorails/Data_preprocessing.ipynb) showing how we preprocessed the other datasets we used in the manuscript. 
+
 ## Analyze results and annotate clusters
 In [cluster annotating tutorial](tutorails/UNIFAN_cluster_annotations.ipynb), we illustrate how to use the coefficients learned by UNIFAN to annotate clusters. Particularly, we show how to select representing gene sets / genes for each cluster, evaluate if selected genes are likely marker genes and visualize the annotations. 
+
+# Updates-log
+* 10-11-2022:  
+-- Add tutorial on preprocessing the datasets used in the manuscript
 
 # Learn-more
 Check our paper at [Genome Research](https://genome.cshlp.org/content/early/2022/06/28/gr.276609.122.long). Link to [preprint](https://www.biorxiv.org/content/10.1101/2021.11.20.469410v2). 
